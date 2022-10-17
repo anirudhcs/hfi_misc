@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
             printf("%p : FAILED\n", page_addr);
         }
 
-        munmap(allocated, page_size);
     }
         printf("Done\n");
 }
