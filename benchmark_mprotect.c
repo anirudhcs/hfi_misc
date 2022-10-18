@@ -6,7 +6,7 @@
 
 #define STRINGIFY(x) STRINGIFY2(x)
 #define STRINGIFY2(x) #x
-#define release_assert(test, ...) if (!(test)) { printf("Assert failed: %s:%d, %s\n", __FILE__, __LINE__, STRINGIFY(test)); abort(); }
+#define release_assert(test) if (!(test)) { printf("Assert failed: %s:%d, %s\n", __FILE__, __LINE__, STRINGIFY(test)); fflush(stdout); abort(); }
 
 int main(int argc, char** argv) {
 

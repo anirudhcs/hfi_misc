@@ -53,10 +53,10 @@
             ]
         },
         {
-            "name": "benchmark_mprotect_hfi",
+            "name": "benchmark_syscall_seccomp",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/benchmark_mprotect_hfi",
+            "program": "${workspaceFolder}/benchmark_syscall_seccomp",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",

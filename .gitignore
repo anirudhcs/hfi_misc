@@ -4,3 +4,6 @@ benchmark_mprotect_guardpages
 benchmark_mprotect_hfi
 benchmark_*.json
 benchmark_*.txt
+benchmark_syscall_noseccomp
+benchmark_syscall_seccomp
+benchmark_syscall_seccompbpf

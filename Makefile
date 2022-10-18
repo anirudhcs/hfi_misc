@@ -16,7 +16,7 @@ ifeq ($(BENCH_OUTPUTFOLDER),)
 BENCH_OUTPUTFOLDER=./
 endif
 
-test_%: %.c
+test_%: test_%.c
 	gcc -O0 -g -o $@ $<
 
 benchmark_mprotect_guardpages: benchmark_mprotect.c $(WASM2C_RUNTIME_FILE)
@@ -24,6 +24,15 @@ benchmark_mprotect_guardpages: benchmark_mprotect.c $(WASM2C_RUNTIME_FILE)
 
 benchmark_mprotect_hfi: benchmark_mprotect.c $(WASM2C_RUNTIME_FILE)
 	gcc $(BENCHMARK_FLAGS) -o $@ $< $(WASM2C_RUNTIME_FILES) $(FLAGS) $(HFI_FLAGS)
+
+benchmark_syscall_seccompbpf: benchmark_syscall.c
+	gcc $(BENCHMARK_FLAGS) -o $@ $< -lseccomp -DSECCOMP_BPF_FILTER
+
+benchmark_syscall_seccomp: benchmark_syscall.c
+	gcc $(BENCHMARK_FLAGS) -o $@ $< -lseccomp -DSECCOMP_FILTER
+
+benchmark_syscall_noseccomp: benchmark_syscall.c
+	gcc $(BENCHMARK_FLAGS) -o $@ $< -lseccomp
 
 run_%: ./%
 	./$*
@@ -37,5 +46,19 @@ benchmark_mprotect: benchmark_mprotect_guardpages benchmark_mprotect_hfi
 hfi_wasmtime:
 	cd hfi-wasmtime && cargo build
 
-build: test_lower4 test_topmost benchmark_mprotect_guardpages benchmark_mprotect_hfi
+benchmark_syscall: benchmark_syscall_noseccomp benchmark_syscall_seccomp benchmark_syscall_seccompbpf
+	hyperfine -N --warmup 10 --export-json "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_noseccomp.json" ./benchmark_syscall_noseccomp && \
+		cat "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_noseccomp.json" | jq '.results[0].mean * 1000' > "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_noseccomp.txt"
+	hyperfine -N --warmup 10 --export-json "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccomp.json" ./benchmark_syscall_seccomp && \
+		cat "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccomp.json" | jq '.results[0].mean * 1000' > "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccomp.txt"
+	hyperfine -N --warmup 10 --export-json "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccompbpf.json" ./benchmark_syscall_seccompbpf && \
+		cat "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccompbpf.json" | jq '.results[0].mean * 1000' > "$(BENCH_OUTPUTFOLDER)/benchmark_syscall_seccompbpf.txt"
 
+FILES=test_lower4 test_topmost benchmark_mprotect_guardpages benchmark_mprotect_hfi benchmark_syscall_seccompbpf benchmark_syscall_seccomp benchmark_syscall_noseccomp
+
+build: $(FILES)
+
+remove_%:
+	rm -f $*
+
+clean: $(addprefix remove_, $(FILES))
