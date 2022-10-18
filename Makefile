@@ -34,5 +34,8 @@ benchmark_mprotect: benchmark_mprotect_guardpages benchmark_mprotect_hfi
 	hyperfine -N --warmup 10 --export-json "$(BENCH_OUTPUTFOLDER)/benchmark_mprotect_hfi.json" ./benchmark_mprotect_hfi && \
 		cat "$(BENCH_OUTPUTFOLDER)/benchmark_mprotect_hfi.json" | jq '.results[0].mean * 1000' > "$(BENCH_OUTPUTFOLDER)/benchmark_mprotect_hfi.txt"
 
+hfi_wasmtime:
+	cd hfi-wasmtime && cargo build
+
 build: test_lower4 test_topmost benchmark_mprotect_guardpages benchmark_mprotect_hfi
 
