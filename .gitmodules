@@ -1,0 +1,3 @@
+[submodule "hfi-wasmtime"]
+	path = hfi-wasmtime
+	url = git@github.com:PLSysSec/hfi-wasmtime.git
