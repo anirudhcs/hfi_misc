@@ -1,2 +1,6 @@
 test_lower4
 test_topmost
+benchmark_mprotect_guardpages
+benchmark_mprotect_hfi
+benchmark_*.json
+benchmark_*.txt
