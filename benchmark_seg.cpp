@@ -49,11 +49,6 @@ void write_to_direct_buffer(size_t buffer_size, uint8_t* direct_buffer) {
 template<typename T_DataSize>
 void runBenchmark(uint64_t test_iterations, bool print, size_t buffer_size, uint8_t* direct_buffer, uint8_t* gs_buffer)
 {
-    asm volatile("wrgsbase %0\n"
-        : /* writes */
-        : /* reads */  "r" (gs_buffer)
-    );
-
     {
         auto enter_time = high_resolution_clock::now();
         for (uint64_t i = 0; i < test_iterations; i++) {
@@ -96,6 +91,11 @@ int main(int argc, char const *argv[])
     for(uint64_t i = 0; i < test_iterations; i++) {
         (void) high_resolution_clock::now();
     }
+
+    asm volatile("wrgsbase %0\n"
+        : /* writes */
+        : /* reads */  "r" (gs_buffer)
+    );
 
     // WARMUP first, real next
     printf("Size: uint8_t\n");
