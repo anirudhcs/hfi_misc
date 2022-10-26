@@ -19,6 +19,12 @@ endif
 test_%: test_%.c
 	gcc -O0 -g -o $@ $<
 
+test_seg: test_seg.c test_seg.S
+	gcc -O0 -g -o $@ test_seg.c test_seg.S
+
+benchmark_seg: benchmark_seg.cpp
+	g++ $(BENCHMARK_FLAGS) -o $@ $<
+
 benchmark_mprotect_guardpages: benchmark_mprotect.c $(WASM2C_RUNTIME_FILE)
 	gcc $(BENCHMARK_FLAGS) -o $@ $< $(WASM2C_RUNTIME_FILES) $(FLAGS) $(GUARDPAGES_FLAGS)
 

@@ -3,6 +3,8 @@
         "*.fst": "ocaml",
         "*.fsti": "ocaml",
         "audit.h": "c",
-        "seccomp.h": "c"
+        "seccomp.h": "c",
+        "stdint.h": "c",
+        "chrono": "cpp"
     }
 }

@@ -7,3 +7,5 @@ benchmark_*.txt
 benchmark_syscall_noseccomp
 benchmark_syscall_seccomp
 benchmark_syscall_seccompbpf
+benchmark_seg
+test_seg
