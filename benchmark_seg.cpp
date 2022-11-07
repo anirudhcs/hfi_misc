@@ -7,10 +7,10 @@
 
 using namespace std::chrono;
 
-#define RELEASE_ASSERT(cond, msg)         \
-    if (!(cond)) {                        \
-        printf("ASSERT FAILED" msg "\n"); \
-        abort();                          \
+#define RELEASE_ASSERT(cond, msg)           \
+    if (!(cond)) {                          \
+        printf("ASSERT FAILED: " msg "\n"); \
+        abort();                            \
     }
 
 #define SCALE 2
@@ -98,26 +98,25 @@ int main(int argc, char const *argv[])
     );
 
     // WARMUP first, real next
-    printf("Size: uint8_t\n");
+    printf("Write uint8_t to a buffer of size %llu\n", (long long unsigned) buffer_size);
     runBenchmark<uint8_t>(test_iterations, false /*no print*/, buffer_size, direct_buffer, gs_buffer);
     runBenchmark<uint8_t>(test_iterations, true /* print*/, buffer_size, direct_buffer, gs_buffer);
     printf("-----------\n");
     // WARMUP first, real next
-    printf("Size: uint16_t\n");
+    printf("Write uint16_t to a buffer of size %llu\n", (long long unsigned) buffer_size);
     runBenchmark<uint16_t>(test_iterations, false /*no print*/, buffer_size, direct_buffer, gs_buffer);
     runBenchmark<uint16_t>(test_iterations, true /* print*/, buffer_size, direct_buffer, gs_buffer);
     printf("-----------\n");
     // WARMUP first, real next
-    printf("Size: uint32_t\n");
+    printf("Write uint32_t to a buffer of size %llu\n", (long long unsigned) buffer_size);
     runBenchmark<uint32_t>(test_iterations, false /*no print*/, buffer_size, direct_buffer, gs_buffer);
     runBenchmark<uint32_t>(test_iterations, true /* print*/, buffer_size, direct_buffer, gs_buffer);
     printf("-----------\n");
     // WARMUP first, real next
-    printf("Size: uint64_t\n");
+    printf("Write uint64_t to a buffer of size %llu\n", (long long unsigned) buffer_size);
     runBenchmark<uint64_t>(test_iterations, false /*no print*/, buffer_size, direct_buffer, gs_buffer);
     runBenchmark<uint64_t>(test_iterations, true /* print*/, buffer_size, direct_buffer, gs_buffer);
     printf("-----------\n");
-
 
     free(gs_buffer);
     free(direct_buffer);
