@@ -9,3 +9,4 @@ benchmark_syscall_seccomp
 benchmark_syscall_seccompbpf
 benchmark_seg
 test_seg
+test_seg_mask
